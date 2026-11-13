@@ -1,19 +1,12 @@
 # Ransomware Readiness Assessment
 
-A structured self-assessment CLI that scores an organisation's readiness
-to withstand, detect, and recover from a ransomware incident, using the
-control categories in NIST CSF and CISA's ransomware guidance.
+A self-assessment CLI, with a simple structure. It scores how ready an organisation is to withstand a ransomware incident, detect it, and recover from it. The control categories come from NIST CSF and CISA's ransomware guidance.
 
 ## The problem it solves
 
-"We think we're okay on ransomware" is not an assessment. Readiness
-reviews often stall because they are unstructured: a long questionnaire,
-no scoring, and no prioritised output. This tool takes a small set of
-honest maturity ratings (0–5) with evidence notes across the ten control
-categories that decide real ransomware outcomes, and produces what a
-review actually needs: a per-category scorecard mapped to NIST CSF
-functions, an overall maturity figure, the critical gaps, and a
-prioritised remediation list an owner can act on.
+"We think we're okay on ransomware" is not an assessment.
+
+Readiness reviews stall for a familiar reason. A long questionnaire. No scoring. No clear output at the end, and nothing prioritised. This tool works differently. You give it a small set of honest maturity ratings (0 to 5), with evidence notes, across the ten control categories that decide real ransomware outcomes. What you get back is what a review needs: a scorecard for each category mapped to NIST CSF functions, an overall maturity figure, the critical gaps, and a remediation list in priority order that an owner can actually act on.
 
 ## Categories assessed
 
@@ -22,11 +15,9 @@ coverage · Patch cadence · EDR coverage · Network segmentation · Least
 privilege · Email filtering & phishing defence · Incident response plan
 & exercises · Logging & central monitoring.
 
-Maturity scale: **0** not implemented · **1** ad hoc · **2** partially
-implemented · **3** defined · **4** managed · **5** optimised/measured.
-Any category scoring **below 2** is flagged as a **critical gap** —
-experience shows incidents turn on exactly those categories (backups
-attackers can delete, standing admin rights, an untested IR plan).
+Maturity scale: **0** not implemented · **1** ad hoc · **2** partially implemented · **3** defined · **4** managed · **5** optimised/measured.
+
+Any category scoring **below 2** is flagged as a **critical gap**. In practice, incidents turn on exactly those categories: backups attackers can delete, standing admin rights, an untested IR plan.
 
 ## How to run
 
@@ -39,9 +30,7 @@ python3 assess.py --demo
 python3 assess.py --file answers.json
 ```
 
-Python 3, standard library only. The answers format is simple JSON:
-an organisation name plus, per category, a `score` (0–5) and an
-`evidence` note recording what the score is based on.
+Python 3, standard library only. The answers format is simple JSON: an organisation name plus, for each category, a `score` (0 to 5) and an `evidence` note that says what the score is based on.
 
 ## Demo output (actual run)
 
@@ -81,26 +70,15 @@ Prioritised remediation list (lowest maturity first):
      -> Segment backups, servers and user networks; block workstation-to-workstation lateral movement.
 ```
 
-The sample company is fictional, with deliberately mixed maturity:
-decent detection (EDR 4/5, email filtering 4/5) undermined by recovery
-and privilege weaknesses — the profile behind many real incidents.
+The sample company is fictional. Its maturity is mixed on purpose. Detection looks decent (EDR 4/5, email filtering 4/5), but recovery and privilege let it down. You see that profile behind a lot of real incidents.
 
 ## Design notes and limitations
 
-- **Self-assessment, not an audit.** Scores are only as honest as the
-  input. The `evidence` field exists so a reviewer can challenge a
-  score; in a real engagement each rating should be tied to an artefact
-  (a restore-test report, an MFA coverage export, a tabletop record).
-- **Unassessed categories** are reported as NOT ASSESSED and excluded
-  from the average rather than silently scored zero — but they are
-  still surfaced, because "we never looked" is itself a finding.
-- The overall figure is an unweighted mean of category scores; the
-  critical-gap flag is deliberately independent of it, so a good
-  average cannot hide a fatal weakness.
-- Framework mapping is at the NIST CSF function level (Protect /
-  Detect / Respond / Recover) for reporting; it is not a formal CSF
-  assessment.
+- **Self-assessment, not an audit.** Scores are only as honest as the input. That is why the `evidence` field is there: a reviewer can challenge a score. In a real engagement, each rating should be tied to an artefact (a restore-test report, an MFA coverage export, a tabletop record).
+- **Unassessed categories** are reported as NOT ASSESSED and left out of the average, instead of being silently scored zero. They still show up in the output, because "we never looked" is itself a finding.
+- The overall figure is an unweighted mean of the category scores. The critical-gap flag is kept separate from it on purpose, so a good average cannot hide a fatal weakness.
+- Framework mapping is at the NIST CSF function level (Protect / Detect / Respond / Recover) for reporting. It is not a formal CSF assessment.
 
 ## License
 
-MIT — see `LICENSE`.
+MIT. See `LICENSE`.
